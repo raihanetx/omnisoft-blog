@@ -2,15 +2,15 @@ import React from 'react';
 import { BlogPost } from '../types';
 import { getPlaceholderColor, getTopicAbbreviation } from '../utils';
 
-interface BlogCardProps {
+interface SuggestedPostCardProps {
     post: BlogPost;
     onSelectPost: (post: BlogPost) => void;
 }
 
-const BlogCard: React.FC<BlogCardProps> = ({ post, onSelectPost }) => {
+const SuggestedPostCard: React.FC<SuggestedPostCardProps> = ({ post, onSelectPost }) => {
     const bgColor = getPlaceholderColor();
     const topic = getTopicAbbreviation(post);
-
+    
     return (
         <div className="bg-gradient-to-br from-card-gradient-from to-card-gradient-to rounded-3xl p-6 flex flex-col transition-transform hover:scale-105 duration-300 border-4 border-button-secondary">
             <div 
@@ -41,4 +41,4 @@ const BlogCard: React.FC<BlogCardProps> = ({ post, onSelectPost }) => {
     );
 };
 
-export default BlogCard;
+export default SuggestedPostCard;

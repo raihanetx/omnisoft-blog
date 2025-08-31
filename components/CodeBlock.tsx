@@ -2,38 +2,39 @@
 import React, { useState } from 'react';
 
 interface CodeBlockProps {
-    children: string;
+    children: React.ReactNode;
 }
 
 const CodeBlock: React.FC<CodeBlockProps> = ({ children }) => {
-    const [copyText, setCopyText] = useState('Copy');
+    const [isCopied, setIsCopied] = useState(false);
+
+    // Convert children to a flat string to handle various node types (like arrays of strings and whitespace)
+    const codeString = React.Children.toArray(children).join('');
 
     const handleCopy = () => {
-        const codeToCopy = children.trim();
-        navigator.clipboard.writeText(codeToCopy).then(() => {
-            setCopyText('Copied!');
-            setTimeout(() => {
-                setCopyText('Copy');
-            }, 2000);
-        }).catch(err => {
-            console.error('Failed to copy text: ', err);
-            setCopyText('Error');
-            setTimeout(() => {
-                setCopyText('Copy');
-            }, 2000);
+        // Use the flattened string for clipboard operations
+        if (!codeString) return;
+        navigator.clipboard.writeText(codeString.trim()).then(() => {
+            setIsCopied(true);
+            setTimeout(() => setIsCopied(false), 2000); // Reset after 2 seconds
+        }, (err) => {
+            console.error('Could not copy text: ', err);
         });
     };
 
     return (
-        <div className="relative not-prose my-8">
+        <div className="my-8 relative">
+            <pre className="bg-[#3a275e] border border-[#865dff] rounded-xl p-6 overflow-x-auto text-sm">
+                {/* Use the flattened and trimmed string for rendering */}
+                <code>{codeString.trim()}</code>
+            </pre>
             <button
                 onClick={handleCopy}
+                className="absolute top-4 right-4 px-3 py-1 text-sm bg-white/10 hover:bg-white/20 rounded-md text-white transition-colors duration-200"
                 aria-label="Copy code to clipboard"
-                className="absolute top-3 right-3 bg-primary-bg border border-gray-600 text-gray-300 text-xs font-semibold py-1 px-3 rounded-md transition-all hover:bg-gray-700 hover:text-white"
             >
-                {copyText}
+                {isCopied ? 'Copied!' : 'Copy'}
             </button>
-            <pre><code>{children.trim()}</code></pre>
         </div>
     );
 };

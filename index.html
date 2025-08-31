@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Omnisoft Blogs</title>
+    <title>omnisoft Blogs</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <!-- Google Fonts -->
@@ -35,23 +35,21 @@
     <style>
         body {
             background-color: #1d152d;
-            background-image:
-                linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
-            background-size: 25px 25px;
+            background-image: 
+                /* Grid overlay */
+                linear-gradient(to right, rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+                /* New professional gradient with corner glows */
+                radial-gradient(ellipse at top left, rgba(171, 94, 244, 0.15) 0%, transparent 70%),
+                radial-gradient(ellipse at bottom right, rgba(99, 71, 171, 0.2) 0%, transparent 70%);
+            background-size: 40px 40px, 40px 40px, auto, auto;
+            background-attachment: fixed;
             font-family: 'Inter', sans-serif;
+            min-height: 100vh;
         }
         .prose-invert h1, .prose-invert h2, .prose-invert h3, .prose-invert h4 {
           color: white !important;
           font-family: 'Lora', serif;
-        }
-        .prose-invert pre {
-            background-color: #2a223c;
-            border: 1px solid #4a3f5e;
-            color: #d1d5db;
-            border-radius: 0.5rem;
-            padding: 1rem;
-            overflow-x: auto;
         }
         .prose-invert code {
             color: #f3f4f6;
@@ -59,6 +57,20 @@
         }
         .prose-invert code::before, .prose-invert code::after {
             content: "" !important;
+        }
+        @keyframes shimmer {
+            0% {
+                background-position: -1000px 0;
+            }
+            100% {
+                background-position: 1000px 0;
+            }
+        }
+
+        .shimmer-bg {
+            animation: shimmer 2s infinite linear;
+            background: linear-gradient(to right, #2d2241 4%, #3c2e56 25%, #2d2241 36%);
+            background-size: 1000px 100%;
         }
     </style>
 <script type="importmap">

@@ -7,9 +7,9 @@ export enum BlogCategory {
 export interface BlogPost {
   id: number;
   title: string;
+  subtitle: string;
   author: string;
   date: string;
-  image: string;
   tags: string[];
   category: BlogCategory;
 }

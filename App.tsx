@@ -4,9 +4,11 @@ import { BlogPost } from './types';
 import MainPage from './components/MainPage';
 import BlogPostPage from './components/BlogPostPage';
 import { BLOG_POSTS } from './constants';
+import BlogPostPageSkeleton from './components/skeletons/BlogPostPageSkeleton';
 
 const App: React.FC = () => {
     const [selectedPost, setSelectedPost] = useState<BlogPost | null>(null);
+    const [isTransitioning, setIsTransitioning] = useState(false);
 
     useEffect(() => {
         if (selectedPost) {
@@ -15,21 +17,45 @@ const App: React.FC = () => {
     }, [selectedPost]);
 
     const handleSelectPost = (post: BlogPost) => {
-        setSelectedPost(post);
+        if (selectedPost?.id === post.id) return;
+
+        setIsTransitioning(true);
+        // If on a post page, deselect first to ensure a clean transition
+        if (selectedPost) {
+            setSelectedPost(null);
+        }
+
+        setTimeout(() => {
+            setSelectedPost(post);
+            setIsTransitioning(false);
+        }, 500); // Simulate loading time, reduced for better responsiveness
     };
 
     const handleGoBack = () => {
         setSelectedPost(null);
     };
 
+    const renderContent = () => {
+        if (isTransitioning) {
+            return <BlogPostPageSkeleton />;
+        }
+        if (selectedPost) {
+            return (
+                <BlogPostPage 
+                    post={selectedPost} 
+                    allPosts={BLOG_POSTS}
+                    onGoBack={handleGoBack}
+                    onSelectPost={handleSelectPost}
+                />
+            );
+        }
+        return <MainPage posts={BLOG_POSTS} onSelectPost={handleSelectPost} />;
+    };
+
     return (
-        <div className="flex items-center min-h-screen">
+        <div className="min-h-screen">
             <div className="w-full">
-                {selectedPost ? (
-                    <BlogPostPage post={selectedPost} onGoBack={handleGoBack} />
-                ) : (
-                    <MainPage posts={BLOG_POSTS} onSelectPost={handleSelectPost} />
-                )}
+                {renderContent()}
             </div>
         </div>
     );
